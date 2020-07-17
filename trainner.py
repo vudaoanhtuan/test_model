@@ -61,7 +61,7 @@ class Trainer:
         with tqdm(total=len(dataloader)) as pbar:
             for src, mask, label, pos in dataloader:
                 src = src.long().to(self.device)
-                mask = mask.to(self.device) == 1
+                mask = mask.long().to(self.device) == 1
                 label = label.long().to(self.device)
                 pos = pos.long().to(self.device)
 
