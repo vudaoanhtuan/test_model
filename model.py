@@ -152,8 +152,7 @@ class Model(nn.Module):
             
             loss_pos = F.cross_entropy(
                 cor_output.reshape(-1, cor_output.shape[-1]), 
-                pos_label.reshape(-1), 
-                ignore_index=self.tgt_padding_value
+                pos_label.reshape(-1)
             )
             
             return output, cor_output, loss_word, loss_pos

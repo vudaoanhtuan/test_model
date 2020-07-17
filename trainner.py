@@ -55,6 +55,8 @@ class Trainer:
             self.model.eval()
         
         total_loss = 0
+        total_word_loss = 0
+        total_pos_loss = 0
         total_item = 0
 
         desc = "total_loss=%.6f | word_loss=%.6f | pos_loss=%.6f | lr=%.6f"
@@ -67,7 +69,7 @@ class Trainer:
 
                 self.optimizer.zero_grad()
                 output, cor_output, loss_word, loss_pos = self.model(src, mask, label, pos)
-                loss = loss_word + loss_pos*1000
+                loss = loss_word + loss_pos*10
 
                 if is_training:
                     loss.backward()
@@ -76,10 +78,17 @@ class Trainer:
                         self.scheduler.step()
 
                 total_loss += loss.item()
+                total_word_loss += loss_word.item()
+                total_pos_loss += loss_pos.item()*10
                 total_item += 1
 
                 pbar.update(1)
-                pbar.set_description(desc%(total_loss/total_item, loss_word.item(), loss_pos.item()*1000, self.optimizer.param_groups[0]['lr']))
+                pbar.set_description(desc%(
+                    total_loss/total_item, 
+                    total_word_loss/total_item, 
+                    total_pos_loss/total_item, 
+                    self.optimizer.param_groups[0]['lr']
+                ))
 
                 if is_training:
                     info = {"train_loss": loss.item()}
