@@ -98,6 +98,6 @@ def transform_sentence(sent, p_transform=0.8, p_del=0.3, p_ins=0.3, p_sub=0.4):
                     words[i] = func(words[i])
 
         words = [w for w in words if w!='']
-        return ' '.join(words), is_transform_pos
+        return ' '.join(words), is_transform_pos.tolist()
     pos = [0]*len(words)
     return sent, pos
