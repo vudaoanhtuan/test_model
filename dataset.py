@@ -72,13 +72,13 @@ class SingleDataset(data.Dataset):
         src = np.concatenate([src, src_pad])
         label = self.tgt[index]
         mask = np.array(mask)
-
+        label = np.array(label, dtype=np.int64)
         return src, mask, label, pos
 
 
 if __name__ == "__main__":
     from tokenizer import load_vocab
-    tokenizer = load_vocab('vocab/src_vocab.txt', 'vocab/tgt_vocab.txt')
+    tokenizer = load_vocab('vocab/char_vocab.txt', 'vocab/word_vocab.txt')
     ds = SingleDataset('data/test.txt', tokenizer)
     src, mask, label, pos = ds.__getitem__(0)
     label = tokenizer._id_to_token(label[:10], tokenizer.word_itos)
