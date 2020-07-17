@@ -72,9 +72,10 @@ class SingleDataset(data.Dataset):
         if src.shape[0] < self.tgt_pad_len:
             src = np.concatenate([src, src_pad])
         label = self.tgt[index]
-        mask = np.array(mask)
         label = np.array(label, dtype=np.int64)
+        mask = np.array(mask, dtype=np.int64)
         pos = np.array(pos, dtype=np.int64)
+        src = np.array(src, dtype=np.int64)
         if src.shape[0]>self.tgt_pad_len: src = src[:self.tgt_pad_len]
         if mask.shape[0]>self.tgt_pad_len: mask = mask[:self.tgt_pad_len]
         if label.shape[0]>self.tgt_pad_len: label = label[:self.tgt_pad_len]
