@@ -47,7 +47,7 @@ class PositionalEncoder(nn.Module):
 
 
 class CharEncoder(nn.Module):
-    def __init__(self, src_vocab_len, 
+    def __init__(self, char_vocab_len, 
         d_model=128, nhead=4, 
         num_encoder_layers=3,
         dim_feedforward=512, 
@@ -57,7 +57,7 @@ class CharEncoder(nn.Module):
         self.src_padding_value = 0
 
         self.pos_embedding = PositionalEncoder(d_model, dropout=dropout)
-        self.src_embedding = nn.Embedding(src_vocab_len, d_model)
+        self.src_embedding = nn.Embedding(char_vocab_len, d_model)
 
 
         encoder_layer = nn.TransformerEncoderLayer(d_model, nhead, dim_feedforward, dropout, activation)
@@ -91,7 +91,7 @@ class CharEncoder(nn.Module):
 
 
 class Model(nn.Module):
-    def __init__(self, src_vocab_len, tgt_vocab_len, 
+    def __init__(self, char_vocab_len, word_vocab_len, 
         d_char_model=128, d_model=256, d_cor=256,
         nhead=8, 
         num_encoder_layers=3, 
@@ -103,15 +103,14 @@ class Model(nn.Module):
         self.tgt_padding_value = 0
 
         self.pos_embedding = PositionalEncoder(d_model, dropout=dropout)
-        self.src_embedding = CharEncoder(src_vocab_len, d_char_model)
+        self.src_embedding = CharEncoder(char_vocab_len, d_char_model)
         self.linear_char_to_word = nn.Linear(d_char_model, d_model)
-        self.tgt_embedding = nn.Embedding(tgt_vocab_len, d_model)
 
         encoder_layer = nn.TransformerEncoderLayer(d_model, nhead, dim_feedforward, dropout, activation)
         encoder_norm = nn.LayerNorm(d_model)
         self.encoder = nn.TransformerEncoder(encoder_layer, num_encoder_layers, encoder_norm)
 
-        self.linear_out = nn.Linear(d_model, tgt_vocab_len)
+        self.linear_out = nn.Linear(d_model, word_vocab_len)
         
         # correction module
         self.linear_cor_1 = nn.Linear(d_char_model+d_model, d_cor)
