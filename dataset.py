@@ -69,7 +69,8 @@ class SingleDataset(data.Dataset):
         mask = [0]*len_src + [1 for _ in range(self.tgt_pad_len-len_src)]
         src_pad = [self.tokenizer.get_pad() for _ in range(self.tgt_pad_len-len_src)]
         src = self.tokenizer.tokenize_char(src)
-        src = np.concatenate([src, src_pad])
+        if src.shape[0] < self.tgt_pad_len:
+            src = np.concatenate([src, src_pad])
         label = self.tgt[index]
         mask = np.array(mask)
         label = np.array(label, dtype=np.int64)

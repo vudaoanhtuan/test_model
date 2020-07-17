@@ -29,16 +29,11 @@ class Tokenizer:
         assert self.char_stoi['[cls]'] == self.word_stoi['[cls]'] == self.cls
         
 
-    def _char_tokenize(self, sent):
-        if self.lower_text:
-            sent = sent.lower()
-        return [c for c in sent]
+    def _char_tokenize(self, word):
+        return [c for c in word]
 
     def _word_tokenize(self, sent):
-        if self.lower_text:
-            sent = sent.lower()
         return sent.split()
-        return words
 
     def _token_to_id(self, tokens, stoi):
         idxs = []
