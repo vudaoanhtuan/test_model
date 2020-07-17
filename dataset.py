@@ -66,7 +66,7 @@ class SingleDataset(data.Dataset):
 
         len_src = len(pos)
         pos = np.concatenate([pos, [0 for _ in range(self.tgt_pad_len-len_src)]])
-        mask = [0]*len_src + [1 for _ in range(self.tgt_pad_len-len_src)]
+        mask = [False]*len_src + [True for _ in range(self.tgt_pad_len-len_src)]
         src_pad = [self.tokenizer.get_pad() for _ in range(self.tgt_pad_len-len_src)]
         src = self.tokenizer.tokenize_char(src)
         src = np.concatenate([src, src_pad])
